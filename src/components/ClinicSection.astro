@@ -1,0 +1,172 @@
+---
+import { Image } from 'astro:assets';
+import interior from '../assets/clinic-interior-placeholder.png';
+---
+
+<section class="clinic-section" id="a-clinica" aria-labelledby="clinic-title">
+  <div class="clinic-copy">
+    <p class="clinic-eyebrow">A clínica<span aria-hidden="true"></span></p>
+    <h2 id="clinic-title">A Humanizada,<br /><span>de perto.</span></h2>
+    <p class="clinic-description">
+      Conheça o espaço, o atendimento e as pessoas por trás da Humanizada.
+      Um primeiro contato para conversar sobre seus objetivos e tirar suas dúvidas.
+    </p>
+    <a
+      class="clinic-link"
+      href="https://www.instagram.com/humanizada.estetica/"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <span>Ver a clínica no Instagram<span class="sr-only"> (abre em outra aba)</span></span>
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14" /></svg>
+    </a>
+  </div>
+
+  <div class="clinic-visual" aria-hidden="true">
+    <Image
+      src={interior}
+      alt=""
+      widths={[480, 768, 1024, 1536]}
+      sizes="(max-width: 700px) calc(100vw - 48px), (max-width: 900px) 91vw, (max-width: 1600px) 57vw, 900px"
+      format="webp"
+      quality={85}
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+</section>
+
+<style>
+  .clinic-section {
+    display: grid;
+    grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
+    grid-template-areas: 'visual copy';
+    align-items: center;
+    gap: clamp(40px, 4vw, 64px);
+    padding-block: clamp(32px, 3.5vw, 56px) clamp(80px, 9vw, 144px);
+    font-family: 'Instrument Sans', 'Manrope', Arial, sans-serif;
+  }
+
+  .clinic-copy { grid-area: copy; min-width: 0; }
+
+  .clinic-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin: 0 0 36px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .clinic-eyebrow > span { width: 100px; height: 1px; background: var(--rose); }
+
+  h2 {
+    margin: 0;
+    font-size: clamp(36px, 3.1vw, 44px);
+    font-weight: 400;
+    line-height: 1.18;
+    letter-spacing: -0.035em;
+  }
+
+  h2 > span { color: var(--olive); }
+
+  .clinic-description {
+    max-width: 32ch;
+    margin: 30px 0 0;
+    font-size: clamp(18px, 1.5vw, 21px);
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.015em;
+  }
+
+  .clinic-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    margin-top: 32px;
+    color: var(--olive-deep);
+    font-size: clamp(17px, 1.4vw, 20px);
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.025em;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
+  }
+
+  .clinic-link svg {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    stroke: currentColor;
+    stroke-width: 1.4;
+    transition: transform 300ms var(--ease-out);
+  }
+
+  .clinic-link:hover svg { transform: translate(2px, -2px); }
+
+  .clinic-visual { grid-area: visual; min-width: 0; background: #e5e1d7; }
+  .clinic-visual img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 10 / 7;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  @media (max-width: 900px) {
+    .clinic-section {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas: 'copy' 'visual';
+      gap: 48px;
+      padding-block: 40px 80px;
+    }
+    .clinic-copy { max-width: 540px; }
+    h2 { font-size: 40px; }
+    .clinic-description { max-width: 40ch; }
+    .clinic-visual img { aspect-ratio: 3 / 2; }
+  }
+
+  @media (max-width: 700px) {
+    .clinic-section { gap: 48px; padding-block: 32px 64px; }
+    .clinic-eyebrow { gap: 18px; margin-bottom: 28px; font-size: 14px; }
+    .clinic-eyebrow > span { width: 90px; }
+    h2 { font-size: 32px; }
+    .clinic-description { margin-top: 26px; font-size: 18px; }
+    .clinic-link { margin-top: 28px; font-size: 17px; }
+    .clinic-visual img { aspect-ratio: 10 / 7; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .clinic-link:hover svg { transform: none; }
+  }
+</style>
+
+<script>
+  const section = document.querySelector<HTMLElement>('.clinic-section');
+  const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  if (section && !motionPreference.matches && 'IntersectionObserver' in window) {
+    const animations: Animation[] = [];
+    const observer = new IntersectionObserver((entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      observer.disconnect();
+      section.querySelectorAll<HTMLElement>('.clinic-copy, .clinic-visual').forEach((element, index) => {
+        animations.push(element.animate(
+          [{ opacity: 0, transform: 'translateY(14px)' }, { opacity: 1, transform: 'translateY(0)' }],
+          { duration: 650, delay: index * 70, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'backwards' },
+        ));
+      });
+    }, { threshold: 0.15 });
+
+    observer.observe(section);
+    motionPreference.addEventListener('change', () => {
+      observer.disconnect();
+      animations.forEach((animation) => animation.cancel());
+    }, { once: true });
+  }
+</script>

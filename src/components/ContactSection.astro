@@ -1,0 +1,111 @@
+---
+import { getAppointmentUrl } from '../data/care';
+---
+
+<section class="contact-section" id="contato" aria-labelledby="contact-title">
+  <div class="contact-heading">
+    <p class="contact-eyebrow">Vamos conversar<span aria-hidden="true"></span></p>
+    <h2 id="contact-title">Agende sua<br /><span>avaliação.</span></h2>
+  </div>
+
+  <div class="contact-action">
+    <p class="contact-description">
+      Fale com a equipe da Humanizada para tirar dúvidas e combinar seu atendimento.
+    </p>
+    <a
+      class="appointment-button contact-button"
+      href={getAppointmentUrl()}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <span>Conversar pelo WhatsApp<span class="sr-only"> (abre em outra aba)</span></span>
+      <span class="button-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M5 19 19 5M5 5h14v14" /></svg>
+        <svg viewBox="0 0 24 24" fill="none"><path d="M5 19 19 5M5 5h14v14" /></svg>
+      </span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .contact-section {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(48px, 7vw, 112px);
+    min-height: clamp(480px, 42vw, 600px);
+    margin-inline: calc(-1 * var(--gutter));
+    padding: clamp(88px, 9vw, 144px) var(--gutter);
+    background: var(--rose-light);
+    font-family: 'Instrument Sans', 'Manrope', Arial, sans-serif;
+  }
+
+  .contact-heading, .contact-action { min-width: 0; }
+
+  .contact-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin: 0 0 38px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .contact-eyebrow > span {
+    width: 100px;
+    height: 1px;
+    background: var(--rose);
+  }
+
+  h2 {
+    margin: 0;
+    font-size: clamp(36px, 3.4vw, 48px);
+    font-weight: 400;
+    line-height: 1.18;
+    letter-spacing: -0.035em;
+  }
+
+  h2 > span { color: var(--olive); }
+
+  .contact-description {
+    max-width: 20rem;
+    margin: 0;
+    font-size: clamp(19px, 1.65vw, 23px);
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.015em;
+  }
+
+  .contact-button {
+    width: min(100%, 360px);
+    min-width: 0;
+    min-height: 58px;
+    gap: 16px;
+    margin-top: 36px;
+    padding: 16px 22px;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  @media (max-width: 900px) {
+    .contact-section { gap: 40px; }
+    .contact-eyebrow { gap: 18px; font-size: 14px; }
+    .contact-eyebrow > span { width: 64px; }
+    .contact-button { padding-inline: 18px; gap: 12px; font-size: 16px; }
+  }
+
+  @media (max-width: 700px) {
+    .contact-section {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 32px;
+      min-height: 0;
+      padding-block: 64px;
+    }
+    .contact-eyebrow { margin-bottom: 30px; }
+    h2 { font-size: 32px; }
+    .contact-description { max-width: 30ch; font-size: 18px; }
+    .contact-button { width: 100%; margin-top: 32px; }
+  }
+</style>
