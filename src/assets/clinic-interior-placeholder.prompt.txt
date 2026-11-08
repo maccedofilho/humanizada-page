@@ -1,0 +1,14 @@
+Asset: clinic-interior-placeholder.png
+Modo: ferramenta nativa image_gen (built-in).
+Uso: imagem de ambiente provisória e decorativa da primeira tela. Não representa a clínica real.
+
+Prompt final:
+
+Use case: photorealistic-natural.
+Asset type: standalone horizontal website hero photograph, landscape 3:2 aspect ratio, ideally 1536 x 1024 or larger.
+Primary request: A calm, bright editorial interior photograph to serve as a temporary atmosphere image for a Brazilian aesthetics clinic landing page. Create ONLY the photograph, not a website mockup, layout, poster, graphic, frame or presentation.
+Scene: A simple luminous, carefully composed corner of a contemporary wellness interior. Soft off-white translucent linen curtain hanging on the left, a warm ivory plaster wall, a low light-oak wooden console along the lower portion, and one small understated matte ivory ceramic vase holding a sparse, delicate olive branch on the right. A gently curved architectural recess in the plaster wall is acceptable but must feel like real architecture, not a decorative webpage image mask. Keep objects minimal and naturally placed.
+Lighting: beautiful diffused late-morning window light, quiet shadows through the curtain, subtle organic leaf shadows across the plaster. Bright and clear rather than moody, soft natural contrast, realistic texture in the plaster, wood grain and linen. Editorial architectural photography, believable ordinary physical materials, refined but not ostentatious.
+Palette: light ivory and natural oak, desaturated olive foliage, very subtle warm neutral hues. Avoid yellow/orange color casts, dark dramatic tones, strong pink, purple, saturated green, pure white featureless surfaces or glossy luxury styling.
+Composition: wide horizontal photograph with harmonious visual depth and generous quiet space; curtain occupying roughly the left third, pale plaster and light across the middle, small vase and branch toward the far right. Show enough context that the scene can be cropped to a wide desktop hero or a smaller mobile image. Keep principal details away from extreme top and bottom edges.
+Constraints: No people, faces, hands, medical devices, needles, branded products, logos, lettering, labels, certificates, captions, signage, UI or watermarks. No display frame, no artificial blur, no CGI sheen, no floating objects. This is a natural photographic atmosphere asset only.

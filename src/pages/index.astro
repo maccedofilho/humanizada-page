@@ -1,4 +1,8 @@
 ---
+import { Image } from 'astro:assets';
+import CareSection from '../components/CareSection.astro';
+import { careCategories as categories, getAppointmentUrl as appointment } from '../data/care';
+import interior from '../assets/clinic-interior-placeholder.png';
 import '../styles/global.css';
 ---
 
@@ -7,12 +11,161 @@ import '../styles/global.css';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Humanizada</title>
+    <meta name="description" content="Estética avançada, cuidado individual. Conheça a Humanizada e agende uma avaliação para entender o que faz sentido para você." />
+    <meta name="theme-color" content="#f7f6f2" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preload" href="/fonts/manrope-latin-variable.woff2" as="font" type="font/woff2" crossorigin />
+    <title>Humanizada — Estética avançada, cuidado individual</title>
   </head>
   <body>
-    <main>
-      <h1>Humanizada</h1>
-      <p>Em breve.</p>
-    </main>
+    <a class="skip-link" href="#inicio">Ir para o conteúdo</a>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="wordmark" href="/" aria-label="Humanizada — início">humanizada<span aria-hidden="true">.</span></a>
+        <nav class="desktop-nav" aria-label="Navegação principal">
+          <a href="#cuidados">Cuidados</a>
+          <a href="https://www.instagram.com/humanizada.estetica/" target="_blank" rel="noopener noreferrer">A clínica<span class="sr-only"> no Instagram (abre em outra aba)</span></a>
+          <a href={appointment()} target="_blank" rel="noopener noreferrer">Contato<span class="sr-only"> pelo WhatsApp (abre em outra aba)</span></a>
+        </nav>
+        <details class="mobile-menu">
+          <summary>
+            <span class="sr-only">Menu de navegação</span>
+            <span class="menu-lines" aria-hidden="true"><i></i><i></i></span>
+          </summary>
+          <nav aria-label="Navegação principal no celular">
+            <a href="#cuidados">Cuidados <span aria-hidden="true">↘</span></a>
+            <a href="https://www.instagram.com/humanizada.estetica/" target="_blank" rel="noopener noreferrer">A clínica <span aria-hidden="true">↗</span><span class="sr-only"> no Instagram (abre em outra aba)</span></a>
+            <a href={appointment()} target="_blank" rel="noopener noreferrer">Contato <span aria-hidden="true">↗</span><span class="sr-only"> pelo WhatsApp (abre em outra aba)</span></a>
+          </nav>
+        </details>
+      </header>
+
+      <main class="page-content" id="inicio">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-heading">
+          <p class="eyebrow"><span>Humanizada / Estética</span><span class="eyebrow-rule" aria-hidden="true"></span></p>
+          <h1 id="hero-title">
+            <span class="headline-line"><span>Estética avançada.</span></span>
+            <span class="headline-line headline-line--olive"><span>Cuidado individual.</span></span>
+          </h1>
+        </div>
+
+        <div class="hero-stage">
+          <div class="hero-intro">
+            <p>Vamos entender o que<br class="desktop-break" /> faz sentido para você.</p>
+            <a class="appointment-button" href={appointment('facial')} data-appointment-link target="_blank" rel="noopener noreferrer" aria-label="Agendar avaliação facial pelo WhatsApp (abre em outra aba)">
+              <span>Agendar avaliação</span>
+              <span class="button-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M5 19 19 5M5 5h14v14" /></svg>
+                <svg viewBox="0 0 24 24" fill="none"><path d="M5 19 19 5M5 5h14v14" /></svg>
+              </span>
+            </a>
+          </div>
+          <div class="hero-visual" aria-hidden="true">
+            <div class="hero-visual-motion">
+              <Image src={interior} alt="" widths={[480, 768, 1024, 1536]}
+                sizes="(max-width: 700px) 100vw, (max-width: 1100px) 60vw, 68vw"
+                format="webp" quality={85} loading="eager" fetchpriority="high" />
+            </div>
+          </div>
+        </div>
+
+        <div class="care-strip" id="cuidados">
+          <fieldset class="care-selector">
+            <legend class="sr-only">Explore os cuidados</legend>
+            <span class="care-label" aria-hidden="true">Explore os cuidados</span>
+            <div class="care-options">
+              {categories.map((category, index) => (
+                <label class="care-option">
+                  <input type="radio" name="care" value={category.value} checked={index === 0}
+                    aria-controls={`care-panel-${category.value}`}
+                    data-contact-href={appointment(category.value)} data-adjective={category.adjective} />
+                  <span>{category.label}</span>
+                </label>
+              ))}
+              <span class="care-indicator" aria-hidden="true"></span>
+            </div>
+          </fieldset>
+          <a class="care-link" href="#opcoes-de-cuidados" data-care-link aria-label="Ver opções de cuidados faciais">
+            <svg viewBox="0 0 32 24" fill="none" aria-hidden="true"><path d="M2 12h27M20 3l9 9-9 9" /></svg>
+          </a>
+          <p class="sr-only" role="status" id="care-status"></p>
+        </div>
+      </section>
+      <CareSection />
+      </main>
+    </div>
   </body>
 </html>
+
+<script>
+  const appointmentLinks = document.querySelectorAll<HTMLAnchorElement>('[data-appointment-link]');
+  const careLink = document.querySelector<HTMLAnchorElement>('[data-care-link]');
+  const careStatus = document.querySelector<HTMLElement>('#care-status');
+  const carePanels = document.querySelectorAll<HTMLElement>('[data-care-panel]');
+  const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let careTransition: Animation | undefined;
+  const careInputs = document.querySelectorAll<HTMLInputElement>('input[name="care"]');
+  const updateContact = (input: HTMLInputElement, announce = false) => {
+    const href = input.dataset.contactHref;
+    if (!href || !input.checked) return;
+    appointmentLinks.forEach((link) => {
+      link.href = href;
+      link.setAttribute('aria-label', 'Agendar avaliação ' + input.value + ' pelo WhatsApp (abre em outra aba)');
+    });
+    careLink?.setAttribute('aria-label', 'Ver opções de cuidados ' + input.dataset.adjective);
+    careTransition?.cancel();
+    carePanels.forEach((panel) => {
+      panel.hidden = panel.dataset.carePanel !== input.value;
+      if (!panel.hidden && announce && !motionPreference.matches) {
+        careTransition = panel.animate(
+          [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'translateY(0)' }],
+          { duration: 320, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' },
+        );
+      }
+    });
+    if (careStatus && announce) careStatus.textContent = 'Cuidados ' + input.dataset.adjective + ' selecionados.';
+  };
+  careInputs.forEach((input) => {
+    input.addEventListener('change', () => updateContact(input, true));
+  });
+  const syncSelectedCare = () => careInputs.forEach((input) => { if (input.checked) updateContact(input); });
+  syncSelectedCare();
+  window.addEventListener('pageshow', syncSelectedCare);
+  motionPreference.addEventListener('change', () => careTransition?.cancel());
+
+  const menu = document.querySelector<HTMLDetailsElement>('.mobile-menu');
+  if (menu) {
+    menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => { menu.open = false; }));
+    document.addEventListener('click', (event) => {
+      if (event.target instanceof Node && !menu.contains(event.target)) menu.open = false;
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && menu.open) {
+        menu.open = false;
+        menu.querySelector('summary')?.focus();
+      }
+    });
+  }
+
+  const visual = document.querySelector<HTMLElement>('.hero-visual');
+  if (visual) {
+    let frame = 0;
+    const resetImage = () => {
+      cancelAnimationFrame(frame);
+      visual.style.setProperty('--look-x', '0px');
+      visual.style.setProperty('--look-y', '0px');
+    };
+    visual.addEventListener('pointermove', (event) => {
+      if (motionPreference.matches || event.pointerType !== 'mouse') return;
+      const bounds = visual.getBoundingClientRect();
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        visual.style.setProperty('--look-x', ((event.clientX - bounds.left) / bounds.width - 0.5) * 10 + 'px');
+        visual.style.setProperty('--look-y', ((event.clientY - bounds.top) / bounds.height - 0.5) * 8 + 'px');
+      });
+    });
+    visual.addEventListener('pointerleave', resetImage);
+    motionPreference.addEventListener('change', resetImage);
+  }
+</script>
